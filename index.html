@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TWAU Interactive Games for Class 3</title>
+    <style>
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1, h2, h3 {
+            text-align: center;
+            color: #4b0082;
+        }
+        
+        h1 {
+            margin-top: 20px;
+            font-size: 2.2rem;
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        /* Menu Styling */
+        .main-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .menu-item {
+            width: 160px;
+            height: 160px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @media (max-width: 768px) {
+            .menu-item {
+                width: 130px;
+                height: 130px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .menu-item {
+                width: 110px;
+                height: 110px;
+            }
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+        }
+        
+        .menu-item h3 {
+            margin: 5px 0;
+            font-size: 1rem;
+            text-align: center;
+            padding: 0 5px;
+        }
+        
+        .menu-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        /* Game Sections */
+        .game-section {
+            display: none;
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .back-button {
+            background-color: #4b0082;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .back-button:hover {
+            background-color: #6a0dad;
+        }
+        
+        /* Game specific styles */
+        .game-container {
+            margin: 20px 0;
+            background-color: #f9f9f9;
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px dashed #ccc;
+        }
+        
+        .game-container h3 {
+            color: #4b0082;
+            margin-top: 0;
+        }
+        
+        .option-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .option {
+            background-color: #fff;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 120px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .option:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+        }
+        
+        .option.correct {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .option.incorrect {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        
+        .feedback {
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Drag and Drop Game */
+        .drag-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        
+        .drop-zone {
+            width: 120px;
+            height: 120px;
+            border: 2px dashed #aaa;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px;
+            position: relative;
+        }
+        
+        .drop-zone::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: -30px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #4b0082;
+        }
+        
+        .draggable {
+            width: 100px;
+            height: 100px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px;
+            cursor: move;
+            font-size: 2.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        /* Sorting Game */
+        .sorting-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .sorting-box {
+            width: 45%;
+            min-width: 250px;
+            border: 2px solid #aaa;
+            border-radius: 10px;
+            padding: 15px;
+            min-height: 200px;
+        }
+        
+        .sorting-box h4 {
+            text-align: center;
+            margin-top: 0;
+            color: #4b0082;
+        }
+        
+        .sort-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px;
+            cursor: move;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        /* Quiz Game */
+        .quiz-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .quiz-question {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .quiz-option {
+            background-color: #fff;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .quiz-option:hover {
+            background-color: #f1f1f1;
+            transform: translateX(5px);
+        }
+        
+        .quiz-result {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .next-btn, .game-btn {
+            background-color: #4b0082;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 20px auto;
+            display: block;
+            transition: background-color 0.3s;
+        }
+        
+        .next-btn:hover, .game-btn:hover {
+            background-color: #6a0dad;
+        }
+        
+        /* Water cycle game */
+        .cycle-container {
+            position: relative;
+            max-width: 500px;
+            height: 400px;
+            margin: 0 auto;
+            background: url('/api/placeholder/500/400') center/cover;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .cycle-point {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        
+        .cycle-point:hover {
+            transform: scale(1.1);
+        }
+        
+        .cycle-info {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Matching game */
+        .matching-game {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .matching-card {
+            height: 100px;
+            background-color: #4b0082;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        
+        .matching-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .matching-card.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .matching-card-front, .matching-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+        }
+        
+        .matching-card-front {
+            background-color: #4b0082;
+            color: white;
+        }
+        
+        .matching-card-back {
+            background-color: white;
+            color: #4b0082;
+            transform: rotateY(180deg);
+        }
+        
+        /* Progress tracker */
+        .progress-container {
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .stars-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .star {
+            font-size: 1.5rem;
+            color: #ddd;
+        }
+        
+        .star.filled {
+            color: gold;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            pointer-events: none;
+            z-index: 999;
+            animation: fall 3s linear forwards;
+        }
+        
+        @keyframes fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" style="display: block;">
+            <h1>Welcome to TWAU Interactive Games</h1>
+            <h2>Class 3 Learning Adventure</h2>
+            
+            <div style="max-width: 500px; margin: 50px auto; background-color: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <h3 style="color: #4b0082; margin-top: 0;">Please Enter Your Details</h3>
+                
+                <div style="margin: 20px 0;">
+                    <label for="student-name" style="display: block; margin-bottom: 8px; font-weight: bold; color: #4b0082;">Your Name:</label>
+                    <input type="text" id="student-name" placeholder="Enter your name" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box;">
+                </div>
+                
+                <div style="margin: 20px 0;">
+                    <label for="student-class" style="display: block; margin-bottom: 8px; font-weight: bold; color: #4b0082;">Your Class:</label>
+                    <select id="student-class" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box;">
+                        <option value="">Select your class</option>
+                        <option value="3A">Class 3A</option>
+                        <option value="3B">Class 3B</option>
+                        <option value="3C">Class 3C</option>
+                        <option value="3D">Class 3D</option>
+                    </select>
+                </div>
+                
+                <button id="start-game" style="background: linear-gradient(to right, #ff758c, #ff7eb3); color: white; border: none; padding: 12px 24px; width: 100%; border-radius: 30px; cursor: pointer; font-size: 18px; margin-top: 20px; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">Start Learning Adventure!</button>
+                
+                <p id="welcome-error" style="color: #d9534f; text-align: center; margin-top: 15px; display: none;">Please enter your name and select your class to continue</p>
+            </div>
+        </div>
+        
+        <!-- Main Game Content -->
+        <div id="game-content" style="display: none;">
+            <h1>TWAU Interactive Games</h1>
+            <h2>Class 3 Learning Adventure</h2>
+            
+            <div id="student-info" style="text-align: center; margin: 10px 0; background-color: white; padding: 10px; border-radius: 50px; display: inline-block; position: relative; left: 50%; transform: translateX(-50%); box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <span id="display-name" style="font-weight: bold; color: #4b0082;"></span> | 
+                <span id="display-class" style="color: #4b0082;"></span>
+            </div>
+        
+        <!-- Main Menu -->
+        <div class="main-menu" id="main-menu">
+            <div id="welcome-message" style="width: 100%; text-align: center; margin-bottom: 20px; background-color: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                <h3 style="margin: 0; color: #4b0082;">Welcome <span id="menu-name" style="font-weight: bold;"></span>!</h3>
+                <p style="margin: 5px 0 0 0;">Choose a topic to start learning:</p>
+            </div>
+            
+            <div class="menu-item" data-section="family">
+                <div class="menu-icon">👪</div>
+                <h3>Family & Friends</h3>
+            </div>
+            <div class="menu-item" data-section="body">
+                <div class="menu-icon">🧍</div>
+                <h3>Our Body</h3>
+            </div>
+            <div class="menu-item" data-section="health">
+                <div class="menu-icon">🧼</div>
+                <h3>Health & Hygiene</h3>
+            </div>
+            <div class="menu-item" data-section="food">
+                <div class="menu-icon">🍎</div>
+                <h3>Food</h3>
+            </div>
+            <div class="menu-item" data-section="water">
+                <div class="menu-icon">💧</div>
+                <h3>Water</h3>
+            </div>
+            <div class="menu-item" data-section="air">
+                <div class="menu-icon">💨</div>
+                <h3>Air</h3>
+            </div>
+        </div>
+        
+        <!-- Family and Friends Section -->
+        <div class="game-section" id="family-section">
+            <button class="back-button">↩ Back to Menu</button>
+            <h2>Family and Friends</h2>
+            
+            <div class="game-container">
+                <h3>Relationship Matching Game</h3>
+                <p>Match the family relationships! Flip the cards to find pairs.</p>
+                
+                <div class="matching-game" id="family-matching">
+                    <!-- Cards will be generated by JS -->
+                </div>
+                
+                <div class="feedback" id="family-feedback"></div>
+                <button class="game-btn" id="family-restart">Restart Game</button>
+            </div>
+            
+            <div class="game-container">
+                <h3>Types of Relationships Quiz</h3>
+                <div class="quiz-container" id="family-quiz">
+                    <div class="quiz-question" id="family-question"></div>
+                    <div class="quiz-options" id="family-options"></div>
+                    <div class="quiz-result" id="family-result"></div>
+                    <button class="next-btn" id="family-next">Next Question</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Our Body Section -->
+        <div class="game-section" id="body-section">
+            <button class="back-button">↩ Back to Menu</button>
+            <h2>Our Body</h2>
+            
+            <div class="game-container">
+                <h3>Body Parts Drag & Drop</h3>
+                <p>Drag the body parts to their correct positions!</p>
+                
+                <div class="drag-container" id="body-drag">
+                    <div class="draggable" draggable="true" data-target="head">👤</div>
+                    <div class="draggable" draggable="true" data-target="heart">❤️</div>
+                    <div class="draggable" draggable="true" data-target="stomach">🍽️</div>
+                    <div class="draggable" draggable="true" data-target="lungs">🫁</div>
+                    
+                    <div class="drop-zone" data-target="head" data-label="Head"></div>
+                    <div class="drop-zone" data-target="heart" data-label="Heart"></div>
+                    <div class="drop-zone" data-target="stomach" data-label="Stomach"></div>
+                    <div class="drop-zone" data-target="lungs" data-label="Lungs"></div>
+                </div>
+                
+                <div class="feedback" id="body-feedback"></div>
+                <button class="game-btn" id="body-check">Check Answers</button>
+            </div>
+            
+            <div class="game-container">
+                <h3>Body Parts Quiz</h3>
+                <div class="quiz-container" id="body-quiz">
+                    <div class="quiz-question" id="body-question"></div>
+                    <div class="quiz-options" id="body-options"></div>
+                    <div class="quiz-result" id="body-result"></div>
+                    <button class="next-btn" id="body-next">Next Question</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Health & Hygiene Section -->
+        <div class="game-section" id="health-section">
+            <button class="back-button">↩ Back to Menu</button>
+            <h2>Health & Hygiene</h2>
+            
+            <div class="game-container">
+                <h3>Healthy vs. Unhealthy Habits</h3>
+                <p>Sort these habits into healthy or unhealthy categories!</p>
+                
+                <div class="sorting-container">
+                    <div class="sorting-box" id="healthy-box">
+                        <h4>Healthy Habits</h4>
+                    </div>
+                    <div class="sorting-box" id="unhealthy-box">
+                        <h4>Unhealthy Habits</h4>
+                    </div>
+                    
+                    <div id="habits-to-sort">
+                        <div class="sort-item" draggable="true" data-type="healthy">Brushing teeth twice a day</div>
+                        <div class="sort-item" draggable="true" data-type="unhealthy">Eating too many sweets</div>
+                        <div class="sort-item" draggable="true" data-type="healthy">Washing hands before meals</div>
+                        <div class="sort-item" draggable="true" data-type="unhealthy">Going to bed very late</div>
+                        <div class="sort-item" draggable="true" data-type="healthy">Eating fruits and vegetables</div>
+                        <div class="sort-item" draggable="true" data-type="unhealthy">Not taking a bath</div>
+                    </div>
+                </div>
+                
+                <div class="feedback" id="health-feedback"></div>
+                <button class="game-btn" id="health-check">Check Sorting</button>
+            </div>
+            
+            <div class="game-container">
+                <h3>Handwashing Steps</h3>
+                <p>Put the handwashing steps in the correct order!</p>
+                
+                <div id="steps-container">
+                    <div class="sort-item" draggable="true" data-order="1">Wet your hands with clean water</div>
+                    <div class="sort-item" draggable="true" data-order="2">Apply soap</div>
+                    <div class="sort-item" draggable="true" data-order="3">Rub hands together for 20 seconds</div>
+                    <div class="sort-item" draggable="true" data-order="4">Rinse hands under clean water</div>
+                    <div class="sort-item" draggable="true" data-order="5">Dry hands with a clean towel</div>
+                </div>
+                
+                <div class="feedback" id="steps-feedback"></div>
+                <button class="game-btn" id="steps-check">Check Order</button>
+            </div>
+        </div>
+        
+        <!-- Food Section -->
+        <div class="game-section" id="food-section">
+            <button class="back-button">↩ Back to Menu</button>
+            <h2>Food</h2>
+            
+            <div class="game-container">
+                <h3>Food Group Sorting</h3>
+                <p>Sort the foods into their correct food groups!</p>
+                
+                <div class="option-container" id="food-options">
+                    <div class="option" data-group="fruits">🍎 Apple</div>
+                    <div class="option" data-group="vegetables">🥕 Carrot</div>
+                    <div class="option" data-group="grains">🍞 Bread</div>
+                    <div class="option" data-group="protein">🥚 Egg</div>
+                    <div class="option" data-group="dairy">🥛 Milk</div>
+                    <div class="option" data-group="fruits">🍌 Banana</div>
+                    <div class="option" data-group="vegetables">🥦 Broccoli</div>
+                    <div class="option" data-group="grains">🍚 Rice</div>
+                    <div class="option" data-group="protein">🐔 Chicken</div>
+                    <div class="option" data-group="dairy">🧀 Cheese</div>
+                </div>
+                
+                <div class="sorting-container">
+                    <div class="sorting-box" id="fruits-box">
+                        <h4>Fruits</h4>
+                    </div>
+                    <div class="sorting-box" id="vegetables-box">
+                        <h4>Vegetables</h4>
+                    </div>
+                    <div class="sorting-box" id="grains-box">
+                        <h4>Grains</h4>
+                    </div>
+                    <div class="sorting-box" id="protein-box">
+                        <h4>Protein</h4>
+                    </div>
+                    <div class="sorting-box" id="dairy-box">
+                        <h4>Dairy</h4>
+                    </div>
+                </div>
+                
+                <div class="feedback" id="food-feedback"></div>
+                <button class="game-btn" id="food-check">Check Food Groups</button>
+            </div>
+            
+            <div class="game-container">
+                <h3>Build a Healthy Meal</h3>
+                <p>Select foods to create a balanced meal!</p>
+                
+                <div class="option-container" id="meal-options">
+                    <div class="option" data-healthy="yes">🍎 Apple</div>
+                    <div class="option" data-healthy="yes">🥗 Salad</div>
+                    <div class="option" data-healthy="yes">🍗 Grilled Chicken</div>
+                    <div class="option" data-healthy="yes">🍚 Brown Rice</div>
+                    <div class="option" data-healthy="no">🍔 Burger</div>
+                    <div class="option" data-healthy="no">🍟 French Fries</div>
+                    <div class="option" data-healthy="no">🥤 Soda</div>
+                    <div class="option" data-healthy="yes">🥛 Milk</div>
+                    <div class="option" data-healthy="yes">🥦 Broccoli</div>
+                    <div class="option" data-healthy="no">🍬 Candy</div>
+                </div>
+                
+                <div class="feedback" id="meal-feedback"></div>
+                <button class="game-btn" id="meal-check">Check My Meal</button>
+            </div>
+        </div>
+        
+        <!-- Water Section -->
+        <div class="game-section" id="water-section">
+            <button class="back-button">↩ Back to Menu</button>
+            <h2>Water</h2>
+            
+            <div class="game-container">
+                <h3>Water Cycle Interactive</h3>
+                <p>Click on different parts of the water cycle to learn about them!</p>
+                
+                <div class="cycle-container" id="water-cycle">
+                    <div class="cycle-point" style="top: 20%; left: 20%;" data-info="evaporation">💨</div>
+                    <div class="cycle-point" style="top: 15%; left: 50%;" data-info="condensation">☁️</div>
+                    <div class="cycle-point" style="top: 30%; left: 70%;" data-info="precipitation">🌧️</div>
+                    <div class="cycle-point" style="top: 60%; left: 50%;" data-info="collection">💧</div>
+                </div>
+                
+                <div class="cycle-info" id="cycle-info">
+                    <h4>Click on a part of the water cycle!</h4>
+                    <p>Learn about how water moves around our planet.</p>
+                </div>
+            </div>
+            
+            <div class="game-container">
+                <h3>Water Conservation Quiz</h3>
+                <div class="quiz-container" id="water-quiz">
+                    <div class="quiz-question" id="water-question"></div>
+                    <div class="quiz-options" id="water-options"></div>
+                    <div class="quiz-result" id="water-result"></div>
+                    <button class="next-btn" id="water-next">Next Question</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Air Section -->
+        <div class="game-section" id="air-section">
+            <button class="back-button">↩ Back to Menu</button>
+            <h2>Air</h2>
+            
+            <div class="game-container">
+                <h3>Clean vs. Polluted Air</h3>
+                <p>Sort these items into things that keep our air clean or make it dirty!</p>
+                
+                <div class="sorting-container">
+                    <div class="sorting-box" id="clean-box">
+                        <h4>Keeps Air Clean</h4>
+                    </div>
+                    <div class="sorting-box" id="polluted-box">
+                        <h4>Makes Air Dirty</h4>
+                    </div>
+                    
+                    <div id="air-items">
+                        <div class="sort-item" draggable="true" data-type="clean">🌳 Planting trees</div>
+                        <div class="sort-item" draggable="true" data-type="polluted">🏭 Factories with smoke</div>
+                        <div class="sort-item" draggable="true" data-type="clean">🚲 Riding bicycles</div>
+                        <div class="sort-item" draggable="true" data-type="polluted">🚗 Too many cars</div>
+                        <div class="sort-item" draggable="true" data-type="clean">🌱 Growing plants</div>
+                        <div class="sort-item" draggable="true" data-type="polluted">🔥 Burning trash</div>
+                    </div>
+                </div>
+                
+                <div class="feedback" id="air-feedback"></div>
+                <button class="game-btn" id="air-check">Check Sorting</button>
+            </div>
+            
+            <div class="game-container">
+                <h3>Why Do We Need Air?</h3>
+                <p>Select all the reasons why air is important!</p>
+                
+                <div class="option-container" id="air-reasons">
+                    <div class="option" data-correct="true">We need oxygen to breathe</div>
+                    <div class="option" data-correct="true">Plants need carbon dioxide</div>
+                    <div class="option" data-correct="true">Air helps birds fly</div>
+                    <div class="option" data-correct="true">Air carries sound waves</div>
+                    <div class="option" data-correct="false">Air makes us sleepy</div>
+                    <div class="option" data-correct="true">Air protects us from the sun's heat</div>
+                    <div class="option" data-correct="false">Air makes our food taste better</div>
+                    <div class="option" data-correct="true">Air helps scatter light to make the sky blue</div>
+                </div>
+                
+                <div class="feedback" id="reasons-feedback"></div>
+                <button class="game-btn" id="reasons-check">Check My Answers</button>
+            </div>
+        </div>
+        
+        <!-- Progress Tracker -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress" id="progress-bar"></div>
+            </div>
+            <div class="stars-container">
+                <div class="star" id="star1">⭐</div>
+                <div class="star" id="star2">⭐</div>
+                <div class="star" id="star3">⭐</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize game state
+        let gameState = {
+            completedGames: 0,
+            totalGames: 12,
+            familyQuizIndex: 0,
+            bodyQuizIndex: 0,
+            waterQuizIndex: 0,
+            matchedPairs: 0,
+            stars: 0
+        };
+        
+        // Quiz questions data
+        const familyQuizData = [
+            {
+                question: "Who are the people who take care of you at home?",
+                options: ["Parents or guardians", "Teachers", "Friends", "Neighbors"],
+                answer: 0
+            },
+            {
+                question: "What do we call our father's or mother's sister?",
+                options: ["Cousin", "Aunt", "Sister", "Grandmother"],
+                answer: 1
+            },
+            {
+                question: "What do we call our parents' parents?",
+                options: ["Siblings", "Aunts and Uncles", "Cousins", "Grandparents"],
+                answer: 3
+            },
+            {
+                question: "What do we call the children of our aunts and uncles?",
+                options: ["Siblings", "Cousins", "Friends", "Neighbors"],
+                answer: 1
+            }
+        ];
+        
+        const bodyQuizData = [
+            {
+                question: "Which organ pumps blood around your body?",
+                options: ["Brain", "Heart", "Lungs", "Stomach"],
+                answer: 1
+            },
+            {
+                question: "Which organ helps you breathe?",
+                options: ["Heart", "Stomach", "Lungs", "Liver"],
+                answer: 2
+            },
+            {
+                question: "Which part of your body helps you think?",
+                options: ["Brain", "Heart", "Stomach", "Bones"],
+                answer: 0
+            },
+            {
+                question: "Which organ helps digest your food?",
+                options: ["Lungs", "Brain", "Heart", "Stomach"],
+                answer: 3
+            }
+        ];
+        
+        const waterQuizData = [
+            {
+                question: "How can we save water at home?",
+                options: [
+                    "Take long showers", 
+                    "Leave the tap running while brushing teeth", 
+                    "Turn off the tap when not using water", 
+                    "Use lots of water to wash one plate"
+                ],
+                answer: 2
+            },
+            {
+                question: "Why is water important for our body?",
+                options: [
+                    "It makes us sleepy", 
+                    "It helps our body function properly", 
+                    "It makes our skin blue", 
+                    "It makes us shorter"
+                ],
+                answer: 1
+            },
+            {
+                question: "What percentage of Earth is covered with water?",
+                options: ["About 25%", "About 50%", "About 70%", "About 90%"],
+                answer: 2
+            },
+            {
+                question: "Which is NOT a way to save water?",
+                options: [
+                    "Taking quick showers", 
+                    "Leaving the water running", 
+                    "Using a bucket to wash the car", 
+                    "Fixing leaky taps"
+                ],
+                answer: 1
+            }
+        ];
+        
+        // Water cycle information
+        const waterCycleInfo = {
+            evaporation: {
+                title: "Evaporation",
+                description: "The sun heats water in oceans, lakes, and rivers, turning it into water vapor that rises into the air."
+            },
+            condensation: {
+                title: "Condensation",
+                description: "Water vapor in the air cools down and forms clouds."
+            },
+            precipitation: {
+                title: "Precipitation",
+                description: "When clouds get heavy with water, the water falls back to Earth as rain, snow, or hail."
+            },
+            collection: {
+                title: "Collection",
+                description: "Water falls into oceans, lakes, rivers, or soaks into the ground, and the cycle starts again!"
+            }
+        };
+        
+        // Family relationship cards
+        const familyCards = [
+            "👨", "Dad", "👩", "Mom", "👦", "Brother", "👧", "Sister", 
+            "👴", "Grandpa", "👵", "Grandma", "👨‍👩‍👧", "Family", "❤️", "Love"
+        ];
+        
+        // Initialize all sections and add event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Welcome screen functionality
+            const welcomeScreen = document.getElementById('welcome-screen');
+            const gameContent = document.getElementById('game-content');
+            const startButton = document.getElementById('start-game');
+            const studentNameInput = document.getElementById('student-name');
+            const studentClassSelect = document.getElementById('student-class');
+            const welcomeError = document.getElementById('welcome-error');
+            const displayName = document.getElementById('display-name');
+            const displayClass = document.getElementById('display-class');
+            
+            // Start game button
+            startButton.addEventListener('click', function() {
+                const name = studentNameInput.value.trim();
+                const className = studentClassSelect.value;
+                
+                if (name === '' || className === '') {
+                    welcomeError.style.display = 'block';
+                    // Shake the button to indicate error
+                    this.style.animation = 'none';
+                    setTimeout(() => this.style.animation = 'shake 0.5s ease-in-out', 5);
+                } else {
+                    // Store student info
+                    localStorage.setItem('studentName', name);
+                    localStorage.setItem('studentClass', className);
+                    
+                    // Update display
+                    displayName.textContent = name;
+                    displayClass.textContent = className;
+                    document.getElementById('menu-name').textContent = name;
+                    
+                    // Show game content
+                    welcomeScreen.style.display = 'none';
+                    gameContent.style.display = 'block';
+                }
+            });
+            
+            // Check for returning student
+            const savedName = localStorage.getItem('studentName');
+            const savedClass = localStorage.getItem('studentClass');
+            
+            if (savedName && savedClass) {
+                studentNameInput.value = savedName;
+                studentClassSelect.value = savedClass;
+                
+                // Update the welcome message in the main menu
+                document.getElementById('menu-name').textContent = savedName;
+            }
+            
+            // Add shake animation for errors
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    20%, 60% { transform: translateX(-10px); }
+                    40%, 80% { transform: translateX(10px); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Menu navigation
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const section = this.getAttribute('data-section');
+                    document.getElementById('main-menu').style.display = 'none';
+                    document.getElementById(`${section}-section`).style.display = 'block';
+                });
+            });
+            
+            // Back buttons
+            document.querySelectorAll('.back-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('.game-section').forEach(section => {
+                        section.style.display = 'none';
+                    });
+                    document.getElementById('main-menu').style.display = 'flex';
+                });
+            });
+            
+            // Initialize all games
+            initFamilyMatching();
+            initFamilyQuiz();
+            initBodyDragDrop();
+            initBodyQuiz();
+            initHealthSorting();
+            initHandwashingSteps();
+            initFoodSorting();
+            initHealthyMeal();
+            initWaterCycle();
+            initWaterQuiz();
+            initAirSorting();
+            initAirReasons();
+            
+            // Initialize progress
+            updateProgress();
+        });
+        
+        // Update progress bar and stars
+        function updateProgress() {
+            const progressPercentage = (gameState.completedGames / gameState.totalGames) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
+            
+            // Update stars
+            if (progressPercentage >= 33) {
+                document.getElementById('star1').classList.add('filled');
+                gameState.stars = 1;
+            }
+            if (progressPercentage >= 66) {
+                document.getElementById('star2').classList.add('filled');
+                gameState.stars = 2;
+            }
+            if (progressPercentage >= 100) {
+                document.getElementById('star3').classList.add('filled');
+                gameState.stars = 3;
+                createConfetti();
+            }
+        }
+        
+        // Create confetti effect when all games completed
+        function createConfetti() {
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        // Mark a game as completed
+        function completeGame() {
+            gameState.completedGames++;
+            updateProgress();
+        }
+        
+        // Family Matching Game
+        function initFamilyMatching() {
+            const gameContainer = document.getElementById('family-matching');
+            const feedback = document.getElementById('family-feedback');
+            const restart = document.getElementById('family-restart');
+            
+            let cards = [...familyCards];
+            let flippedCards = [];
+            let matchedCards = [];
+            
+            // Shuffle cards using Fisher-Yates algorithm
+            function shuffleCards(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+            
+            // Create cards
+            function createCards() {
+                gameContainer.innerHTML = '';
+                gameState.matchedPairs = 0;
+                cards = shuffleCards(cards);
+                
+                cards.forEach((cardValue, index) => {
+                    const card = document.createElement('div');
+                    card.classList.add('matching-card');
+                    card.dataset.value = cardValue;
+                    card.dataset.index = index;
+                    
+                    const cardFront = document.createElement('div');
+                    cardFront.classList.add('matching-card-front');
+                    cardFront.innerHTML = '?';
+                    
+                    const cardBack = document.createElement('div');
+                    cardBack.classList.add('matching-card-back');
+                    cardBack.innerHTML = cardValue;
+                    
+                    card.appendChild(cardFront);
+                    card.appendChild(cardBack);
+                    
+                    card.addEventListener('click', flipCard);
+                    gameContainer.appendChild(card);
+                });
+            }
+            
+            // Flip card logic
+            function flipCard() {
+                if (flippedCards.length === 2) return;
+                if (matchedCards.includes(this.dataset.index)) return;
+                
+                this.classList.add('flipped');
+                flippedCards.push(this);
+                
+                if (flippedCards.length === 2) {
+                    setTimeout(checkMatch, 1000);
+                }
+            }
+            
+            // Check if cards match
+            function checkMatch() {
+                const firstCard = flippedCards[0];
+                const secondCard = flippedCards[1];
+                
+                // Check if pair matches (for example, "Dad" matches with "👨")
+                const isMatch = (
+                    (cards.indexOf(firstCard.dataset.value) % 2 === 0 && 
+                     cards.indexOf(secondCard.dataset.value) === cards.indexOf(firstCard.dataset.value) + 1) ||
+                    (cards.indexOf(firstCard.dataset.value) % 2 === 1 && 
+                     cards.indexOf(secondCard.dataset.value) === cards.indexOf(firstCard.dataset.value) - 1)
+                );
+                
+                if (isMatch) {
+                    firstCard.removeEventListener('click', flipCard);
+                    secondCard.removeEventListener('click', flipCard);
+                    matchedCards.push(firstCard.dataset.index, secondCard.dataset.index);
+                    gameState.matchedPairs++;
+                    
+                    if (gameState.matchedPairs === cards.length / 2) {
+                        feedback.textContent = "Great job! You've matched all the pairs!";
+                        feedback.className = 'feedback success';
+                        feedback.style.display = 'block';
+                        completeGame();
+                    }
+                } else {
+                    firstCard.classList.remove('flipped');
+                    secondCard.classList.remove('flipped');
+                }
+                
+                flippedCards = [];
+            }
+            
+            // Restart game
+            restart.addEventListener('click', createCards);
+            
+            // Initialize game
+            createCards();
+        }
+        
+        // Family Quiz
+        function initFamilyQuiz() {
+            const question = document.getElementById('family-question');
+            const options = document.getElementById('family-options');
+            const result = document.getElementById('family-result');
+            const nextButton = document.getElementById('family-next');
+            
+            // Load question
+            function loadQuestion() {
+                const currentQuestion = familyQuizData[gameState.familyQuizIndex];
+                question.textContent = currentQuestion.question;
+                
+                options.innerHTML = '';
+                currentQuestion.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.classList.add('quiz-option');
+                    optionElement.textContent = option;
+                    optionElement.dataset.index = index;
+                    optionElement.addEventListener('click', checkAnswer);
+                    options.appendChild(optionElement);
+                });
+                
+                result.style.display = 'none';
+            }
+            
+            // Check answer
+            function checkAnswer() {
+                const selectedIndex = parseInt(this.dataset.index);
+                const currentQuestion = familyQuizData[gameState.familyQuizIndex];
+                
+                // Disable all options
+                document.querySelectorAll('.quiz-option').forEach(option => {
+                    option.removeEventListener('click', checkAnswer);
+                    option.style.pointerEvents = 'none';
+                });
+                
+                if (selectedIndex === currentQuestion.answer) {
+                    result.textContent = "Correct! Great job!";
+                    result.className = 'quiz-result success';
+                    this.style.backgroundColor = '#d4edda';
+                    this.style.borderColor = '#c3e6cb';
+                } else {
+                    result.textContent = "Not quite. Try again!";
+                    result.className = 'quiz-result error';
+                    this.style.backgroundColor = '#f8d7da';
+                    this.style.borderColor = '#f5c6cb';
+                    
+                    // Highlight correct answer
+                    const correctOption = document.querySelectorAll('.quiz-option')[currentQuestion.answer];
+                    correctOption.style.backgroundColor = '#d4edda';
+                    correctOption.style.borderColor = '#c3e6cb';
+                }
+                
+                result.style.display = 'block';
+                
+                // If last question
+                if (gameState.familyQuizIndex === familyQuizData.length - 1) {
+                    nextButton.textContent = 'Finish Quiz';
+                    completeGame();
+                }
+            }
+            
+            // Next question
+            nextButton.addEventListener('click', function() {
+                gameState.familyQuizIndex++;
+                
+                if (gameState.familyQuizIndex < familyQuizData.length) {
+                    loadQuestion();
+                } else {
+                    gameState.familyQuizIndex = 0;
+                    loadQuestion();
+                    nextButton.textContent = 'Next Question';
+                }
+            });
+            
+            // Initialize quiz
+            loadQuestion();
+        }
+        
+        // Body Parts Drag & Drop
+        function initBodyDragDrop() {
+            const draggables = document.querySelectorAll('#body-drag .draggable');
+            const dropZones = document.querySelectorAll('#body-drag .drop-zone');
+            const checkButton = document.getElementById('body-check');
+            const feedback = document.getElementById('body-feedback');
+            
+            // Drag events
+            draggables.forEach(draggable => {
+                draggable.addEventListener('dragstart', function() {
+                    this.classList.add('dragging');
+                });
+                
+                draggable.addEventListener('dragend', function() {
+                    this.classList.remove('dragging');
+                });
+            });
+            
+            // Drop events
+            dropZones.forEach(dropZone => {
+                dropZone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.style.backgroundColor = '#f0f0f0';
+                });
+                
+                dropZone.addEventListener('dragleave', function() {
+                    this.style.backgroundColor = '';
+                });
+                
+                dropZone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.style.backgroundColor = '';
+                    const draggable = document.querySelector('.dragging');
+                    
+                    // Remove from previous drop zone if exists
+                    const previousParent = draggable.parentElement;
+                    if (previousParent.classList.contains('drop-zone')) {
+                        previousParent.removeChild(draggable);
+                    }
+                    
+                    // Add to new drop zone
+                    this.appendChild(draggable);
+                });
+            });
+            
+            // Check answers
+            checkButton.addEventListener('click', function() {
+                let allCorrect = true;
+                
+                dropZones.forEach(dropZone => {
+                    const targetOrgan = dropZone.getAttribute('data-target');
+                    const droppedItem = dropZone.querySelector('.draggable');
+                    
+                    if (!droppedItem || droppedItem.getAttribute('data-target') !== targetOrgan) {
+                        allCorrect = false;
+                        dropZone.style.border = '2px solid #f8d7da';
+                    } else {
+                        dropZone.style.border = '2px solid #d4edda';
+                    }
+                });
+                
+                if (allCorrect) {
+                    feedback.textContent = "Great job! You placed all body parts correctly!";
+                    feedback.className = 'feedback success';
+                    completeGame();
+                } else {
+                    feedback.textContent = "Not all body parts are in the right place. Try again!";
+                    feedback.className = 'feedback error';
+                }
+                
+                feedback.style.display = 'block';
+            });
+        }
+        
+        // Body Parts Quiz
+        function initBodyQuiz() {
+            const question = document.getElementById('body-question');
+            const options = document.getElementById('body-options');
+            const result = document.getElementById('body-result');
+            const nextButton = document.getElementById('body-next');
+            
+            // Load question
+            function loadQuestion() {
+                const currentQuestion = bodyQuizData[gameState.bodyQuizIndex];
+                question.textContent = currentQuestion.question;
+                
+                options.innerHTML = '';
+                currentQuestion.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.classList.add('quiz-option');
+                    optionElement.textContent = option;
+                    optionElement.dataset.index = index;
+                    optionElement.addEventListener('click', checkAnswer);
+                    options.appendChild(optionElement);
+                });
+                
+                result.style.display = 'none';
+            }
+            
+            // Check answer
+            function checkAnswer() {
+                const selectedIndex = parseInt(this.dataset.index);
+                const currentQuestion = bodyQuizData[gameState.bodyQuizIndex];
+                
+                // Disable all options
+                document.querySelectorAll('#body-quiz .quiz-option').forEach(option => {
+                    option.removeEventListener('click', checkAnswer);
+                    option.style.pointerEvents = 'none';
+                });
+                
+                if (selectedIndex === currentQuestion.answer) {
+                    result.textContent = "Correct! Great job!";
+                    result.className = 'quiz-result success';
+                    this.style.backgroundColor = '#d4edda';
+                    this.style.borderColor = '#c3e6cb';
+                } else {
+                    result.textContent = "Not quite. Try again!";
+                    result.className = 'quiz-result error';
+                    this.style.backgroundColor = '#f8d7da';
+                    this.style.borderColor = '#f5c6cb';
+                    
+                    // Highlight correct answer
+                    const correctOption = document.querySelectorAll('#body-quiz .quiz-option')[currentQuestion.answer];
+                    correctOption.style.backgroundColor = '#d4edda';
+                    correctOption.style.borderColor = '#c3e6cb';
+                }
+                
+                result.style.display = 'block';
+                
+                // If last question
+                if (gameState.bodyQuizIndex === bodyQuizData.length - 1) {
+                    nextButton.textContent = 'Finish Quiz';
+                    completeGame();
+                }
+            }
+            
+            // Next question
+            nextButton.addEventListener('click', function() {
+                gameState.bodyQuizIndex++;
+                
+                if (gameState.bodyQuizIndex < bodyQuizData.length) {
+                    loadQuestion();
+                } else {
+                    gameState.bodyQuizIndex = 0;
+                    loadQuestion();
+                    nextButton.textContent = 'Next Question';
+                }
+            });
+            
+            // Initialize quiz
+            loadQuestion();
+        }
+        
+        // Health Habits Sorting
+        function initHealthSorting() {
+            const healthyBox = document.getElementById('healthy-box');
+            const unhealthyBox = document.getElementById('unhealthy-box');
+            const habitsToSort = document.getElementById('habits-to-sort');
+            const sortItems = document.querySelectorAll('#habits-to-sort .sort-item');
+            const checkButton = document.getElementById('health-check');
+            const feedback = document.getElementById('health-feedback');
+            
+            // Drag events
+            sortItems.forEach(item => {
+                item.addEventListener('dragstart', function() {
+                    this.classList.add('dragging');
+                });
+                
+                item.addEventListener('dragend', function() {
+                    this.classList.remove('dragging');
+                });
+            });
+            
+            // Drop events for boxes
+            [healthyBox, unhealthyBox].forEach(box => {
+                box.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.style.backgroundColor = '#f0f0f0';
+                });
+                
+                box.addEventListener('dragleave', function() {
+                    this.style.backgroundColor = '';
+                });
+                
+                box.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.style.backgroundColor = '';
+                    const draggable = document.querySelector('.dragging');
+                    
+                    // Add to box
+                    this.appendChild(draggable);
+                });
+            });
+            
+            // Check sorting
+            checkButton.addEventListener('click', function() {
+                let allCorrect = true;
+                
+                // Check healthy habits
+                healthyBox.querySelectorAll('.sort-item').forEach(item => {
+                    if (item.getAttribute('data-type') !== 'healthy') {
+                        allCorrect = false;
+                        item.style.backgroundColor = '#f8d7da';
+                    } else {
+                        item.style.backgroundColor = '#d4edda';
+                    }
+                });
+                
+                // Check unhealthy habits
+                unhealthyBox.querySelectorAll('.sort-item').forEach(item => {
+                    if (item.getAttribute('data-type') !== 'unhealthy') {
+                        allCorrect = false;
+                        item.style.backgroundColor = '#f8d7da';
+                    } else {
+                        item.style.backgroundColor = '#d4edda';
+                    }
+                });
+                
+                if (allCorrect) {
+                    feedback.textContent = "Great job! You sorted all habits correctly!";
+                    feedback.className = 'feedback success';
+                    completeGame();
+                } else {
+                    feedback.textContent = "Some habits are not sorted correctly. Try again!";
+                    feedback.className = 'feedback error';
+                }
+                
+                feedback.style.display = 'block';
+            });
+        }
+        
+        // Handwashing Steps
+        function initHandwashingSteps() {
+            const stepsContainer = document.getElementById('steps-container');
+            const checkButton = document.getElementById('steps-check');
+            const feedback = document.getElementById('steps-feedback');
+            const steps = stepsContainer.querySelectorAll('.sort-item');
+            
+            // Shuffle steps
+            function shuffleSteps() {
+                const stepsArray = Array.from(steps);
+                for (let i = stepsArray.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    stepsContainer.appendChild(stepsArray[j]);
+                }
+            }
+            
+            // Make steps draggable
+            steps.forEach(step => {
+                step.addEventListener('dragstart', function() {
+                    this.classList.add('dragging');
+                });
+                
+                step.addEventListener('dragend', function() {
+                    this.classList.remove('dragging');
+                });
+            });
+            
+            // Allow dropping in container
+            stepsContainer.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                const draggable = document.querySelector('.dragging');
+                const afterElement = getDragAfterElement(stepsContainer, e.clientY);
+                if (afterElement) {
+                    stepsContainer.insertBefore(draggable, afterElement);
+                } else {
+                    stepsContainer.appendChild(draggable);
+                }
+            });
+            
+            // Helper function to find position
+            function getDragAfterElement(container, y) {
+                const draggableElements = [...container.querySelectorAll('.sort-item:not(.dragging)')];
+                
+                return draggableElements.reduce((closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = y - box.top - box.height / 2;
+                    
+                    if (offset < 0 && offset > closest.offset) {
+                        return { offset: offset, element: child };
+                    } else {
+                        return closest;
+                    }
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+            }
+            
+            // Check order
+            checkButton.addEventListener('click', function() {
+                const currentOrder = Array.from(stepsContainer.querySelectorAll('.sort-item'));
+                let isCorrect = true;
+                
+                for (let i = 0; i < currentOrder.length; i++) {
+                    const expectedOrder = parseInt(currentOrder[i].getAttribute('data-order'));
+                    
+                    if (expectedOrder !== i + 1) {
+                        isCorrect = false;
+                        currentOrder[i].style.backgroundColor = '#f8d7da';
+                    } else {
+                        currentOrder[i].style.backgroundColor = '#d4edda';
+                    }
+                }
+                
+                if (isCorrect) {
+                    feedback.textContent = "Perfect! You have the steps in the right order!";
+                    feedback.className = 'feedback success';
+                    completeGame();
+                } else {
+                    feedback.textContent = "The steps are not in the correct order. Try again!";
+                    feedback.className = 'feedback error';
+                }
+                
+                feedback.style.display = 'block';
+            });
+            
+            // Initialize with shuffled steps
+            shuffleSteps();
+        }
+        
+        // Food Group Sorting
+        function initFoodSorting() {
+            const foodOptions = document.getElementById('food-options');
+            const foodItems = foodOptions.querySelectorAll('.option');
+            const foodBoxes = document.querySelectorAll('#food-section .sorting-box');
+            const checkButton = document.getElementById('food-check');
+            const feedback = document.getElementById('food-feedback');
+            
+            // Make food items draggable
+            foodItems.forEach(item => {
+                item.addEventListener('dragstart', function(e) {
+                    this.classList.add('dragging');
+                });
+                
+                item.addEventListener('dragend', function() {
+                    this.classList.remove('dragging');
+                });
+            });
+            
+            // Drop events for food group boxes
+            foodBoxes.forEach(box => {
+                box.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.style.backgroundColor = '#f0f0f0';
+                });
+                
+                box.addEventListener('dragleave', function() {
+                    this.style.backgroundColor = '';
+                });
+                
+                box.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.style.backgroundColor = '';
+                    const draggable = document.querySelector('.dragging');
+                    const clone = draggable.cloneNode(true);
+                    
+                    // Remove dragging class from clone
+                    clone.classList.remove('dragging');
+                    
+                    // Add to box
+                    this.appendChild(clone);
+                    
+                    // Remove original if it's already in a box
+                    if (draggable.parentElement !== foodOptions) {
+                        draggable.remove();
+                    }
+                });
+            });
+            
+            // Check food groups
+            checkButton.addEventListener('click', function() {
+                let allCorrect = true;
+                
+                foodBoxes.forEach(box => {
+                    const boxId = box.id;
+                    const foodGroup = boxId.split('-')[0]; // Extract food group from id
+                    
+                    // Check items in this box
+                    box.querySelectorAll('.option').forEach(item => {
+                        if (item.getAttribute('data-group') !== foodGroup) {
+                            allCorrect = false;
+                            item.classList.add('incorrect');
+                            item.classList.remove('correct');
+                        } else {
+                            item.classList.add('correct');
+                            item.classList.remove('incorrect');
+                        }
+                    });
+                });
+                
+                if (allCorrect) {
+                    feedback.textContent = "Great job! You sorted all foods into the correct groups!";
+                    feedback.className = 'feedback success';
+                    completeGame();
+                } else {
+                    feedback.textContent = "Some foods are not in the right groups. Try again!";
+                    feedback.className = 'feedback error';
+                }
+                
+                feedback.style.display = 'block';
+            });
+        }
+        
+        // Healthy Meal Building
+        function initHealthyMeal() {
+            const mealOptions = document.querySelectorAll('#meal-options .option');
+            const checkButton = document.getElementById('meal-check');
+            const feedback = document.getElementById('meal-feedback');
+            
+            // Make options selectable
+            mealOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                    
+                    if (this.classList.contains('selected')) {
+                        this.style.backgroundColor = '#d4edda';
+                        this.style.borderColor = '#c3e6cb';
+                    } else {
+                        this.style.backgroundColor = '';
+                        this.style.borderColor = '';
+                    }
+                });
+            });
+            
+            // Check meal
+            checkButton.addEventListener('click', function() {
+                const selectedOptions = document.querySelectorAll('#meal-options .option.selected');
+                let healthyCount = 0;
+                let unhealthyCount = 0;
+                
+                selectedOptions.forEach(option => {
+                    if (option.getAttribute('data-healthy') === 'yes') {
+                        healthyCount++;
+                    } else {
+                        unhealthyCount++;
+                    }
+                });
+                
+                if (selectedOptions.length === 0) {
+                    feedback.textContent = "Please select some foods for your meal!";
+                    feedback.className = 'feedback error';
+                } else if (healthyCount >= 3 && unhealthyCount <= 1) {
+                    feedback.textContent = "Great job! You've created a healthy balanced meal!";
+                    feedback.className = 'feedback success';
+                    completeGame();
+                } else {
+                    feedback.textContent = "Try to include more healthy foods and fewer unhealthy ones!";
+                    feedback.className = 'feedback error';
+                }
+                
+                feedback.style.display = 'block';
+            });
+        }
+        
+        // Water Cycle Interactive
+        function initWaterCycle() {
+            const cyclePoints = document.querySelectorAll('#water-cycle .cycle-point');
+            const cycleInfo = document.getElementById('cycle-info');
+            
+            cyclePoints.forEach(point => {
+                point.addEventListener('click', function() {
+                    const infoType = this.getAttribute('data-info');
+                    const info = waterCycleInfo[infoType];
+                    
+                    cycleInfo.innerHTML = `
+                        <h4>${info.title}</h4>
+                        <p>${info.description}</p>
+                    `;
+                    
+                    // Highlight this point
+                    cyclePoints.forEach(pt => pt.style.transform = '');
+                    this.style.transform = 'scale(1.2)';
+                });
+            });
+            
+            // Mark as completed when they've clicked all 4 points
+            let clickedPoints = new Set();
+            cyclePoints.forEach(point => {
+                point.addEventListener('click', function() {
+                    const infoType = this.getAttribute('data-info');
+                    clickedPoints.add(infoType);
+                    
+                    if (clickedPoints.size === 4) {
+                        cycleInfo.innerHTML += '<p class="success" style="margin-top:10px">Great job exploring the water cycle!</p>';
+                        completeGame();
+                    }
+                });
+            });
+        }
+        
+        // Water Conservation Quiz
+        function initWaterQuiz() {
+            const question = document.getElementById('water-question');
+            const options = document.getElementById('water-options');
+            const result = document.getElementById('water-result');
+            const nextButton = document.getElementById('water-next');
+            
+            // Load question
+            function loadQuestion() {
+                const currentQuestion = waterQuizData[gameState.waterQuizIndex];
+                question.textContent = currentQuestion.question;
+                
+                options.innerHTML = '';
+                currentQuestion.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.classList.add('quiz-option');
+                    optionElement.textContent = option;
+                    optionElement.dataset.index = index;
+                    optionElement.addEventListener('click', checkAnswer);
+                    options.appendChild(optionElement);
+                });
+                
+                result.style.display = 'none';
+            }
+            
+            // Check answer
+            function checkAnswer() {
+                const selectedIndex = parseInt(this.dataset.index);
+                const currentQuestion = waterQuizData[gameState.waterQuizIndex];
+                
+                // Disable all options
+                document.querySelectorAll('#water-quiz .quiz-option').forEach(option => {
+                    option.removeEventListener('click', checkAnswer);
+                    option.style.pointerEvents = 'none';
+                });
+                
+                if (selectedIndex === currentQuestion.answer) {
+                    result.textContent = "Correct! Great job!";
+                    result.className = 'quiz-result success';
+                    this.style.backgroundColor = '#d4edda';
+                    this.style.borderColor = '#c3e6cb';
+                } else {
+                    result.textContent = "Not quite. Try again!";
+                    result.className = 'quiz-result error';
+                    this.style.backgroundColor = '#f8d7da';
+                    this.style.borderColor = '#f5c6cb';
+                    
+                    // Highlight correct answer
+                    const correctOption = document.querySelectorAll('#water-quiz .quiz-option')[currentQuestion.answer];
+                    correctOption.style.backgroundColor = '#d4edda';
+                    correctOption.style.borderColor = '#c3e6cb';
+                }
+                
+                result.style.display = 'block';
+                
+                // If last question
+                if (gameState.waterQuizIndex === waterQuizData.length - 1) {
+                    nextButton.textContent = 'Finish Quiz';
+                    completeGame();
+                }
+            }
+            
+            // Next question
+            nextButton.addEventListener('click', function() {
+                gameState.waterQuizIndex++;
+                
+                if (gameState.waterQuizIndex < waterQuizData.length) {
+                    loadQuestion();
+                } else {
+                    gameState.waterQuizIndex = 0;
+                    loadQuestion();
+                    nextButton.textContent = 'Next Question';
+                }
+            });
+            
+            // Initialize quiz
+            loadQuestion();
+        }
+        
+        // Air Quality Sorting
+        function initAirSorting() {
+            const cleanBox = document.getElementById('clean-box');
+            const pollutedBox = document.getElementById('polluted-box');
+            const airItems = document.querySelectorAll('#air-items .sort-item');
+            const checkButton = document.getElementById('air-check');
+            const feedback = document.getElementById('air-feedback');
+            
+            // Drag events
+            airItems.forEach(item => {
+                item.addEventListener('dragstart', function() {
+                    this.classList.add('dragging');
+                });
+                
+                item.addEventListener('dragend', function() {
+                    this.classList.remove('dragging');
+                });
+            });
+            
+            // Drop events for boxes
+            [cleanBox, pollutedBox].forEach(box => {
+                box.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.style.backgroundColor = '#f0f0f0';
+                });
+                
+                box.addEventListener('dragleave', function() {
+                    this.style.backgroundColor = '';
+                });
+                
+                box.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.style.backgroundColor = '';
+                    const draggable = document.querySelector('.dragging');
+                    
+                    // Add to box
+                    this.appendChild(draggable);
+                });
+            });
+            
+            // Check sorting
+            checkButton.addEventListener('click', function() {
+                let allCorrect = true;
+                
+                // Check clean air items
+                cleanBox.querySelectorAll('.sort-item').forEach(item => {
+                    if (item.getAttribute('data-type') !== 'clean') {
+                        allCorrect = false;
+                        item.style.backgroundColor = '#f8d7da';
+                    } else {
+                        item.style.backgroundColor = '#d4edda';
+                    }
+                });
+                
+                // Check polluted air items
+                pollutedBox.querySelectorAll('.sort-item').forEach(item => {
+                    if (item.getAttribute('data-type') !== 'polluted') {
+                        allCorrect = false;
+                        item.style.backgroundColor = '#f8d7da';
+                    } else {
+                        item.style.backgroundColor = '#d4edda';
+                    }
+                });
+                
+                if (allCorrect) {
+                    feedback.textContent = "Great job! You sorted all air items correctly!";
+                    feedback.className = 'feedback success';
+                    completeGame();
+                } else {
+                    feedback.textContent = "Some items are not sorted correctly. Try again!";
+                    feedback.className = 'feedback error';
+                }
+                
+                feedback.style.display = 'block';
+            });
+        }
+        
+        // Air Importance Selection
+        function initAirReasons() {
+            const reasonOptions = document.querySelectorAll('#air-reasons .option');
+            const checkButton = document.getElementById('reasons-check');
+            const feedback = document.getElementById('reasons-feedback');
+            
+            // Make options selectable
+            reasonOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                    
+                    if (this.classList.contains('selected')) {
+                        this.style.backgroundColor = '#d4edda';
+                        this.style.borderColor = '#c3e6cb';
+                    } else {
+                        this.style.backgroundColor = '';
+                        this.style.borderColor = '';
+                    }
+                });
+            });
+            
+            // Check selections
+            checkButton.addEventListener('click', function() {
+                let allCorrect = true;
+                
+                reasonOptions.forEach(option => {
+                    const isSelected = option.classList.contains('selected');
+                    const shouldBeSelected = option.getAttribute('data-correct') === 'true';
+                    
+                    if (isSelected !== shouldBeSelected) {
+                        allCorrect = false;
+                        option.style.backgroundColor = '#f8d7da';
+                        option.style.borderColor = '#f5c6cb';
+                    } else {
+                        option.style.backgroundColor = '#d4edda';
+                        option.style.borderColor = '#c3e6cb';
+                    }
+                });
+                
+                if (allCorrect) {
+                    feedback.textContent = "Excellent! You know why air is important!";
+                    feedback.className = 'feedback success';
+                    completeGame();
+                } else {
+                    feedback.textContent = "Check your answers again. Some are not correct.";
+                    feedback.className = 'feedback error';
+                }
+                
+                feedback.style.display = 'block';
+            });
+        }
+    </script>
+</body>
+</html>
