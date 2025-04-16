@@ -666,19 +666,13 @@
             </div>
             
             <div class="game-container">
-                <h3>Handwashing Steps</h3>
-                <p>Put the handwashing steps in the correct order!</p>
-                
-                <div id="steps-container">
-                    <div class="sort-item" draggable="true" data-order="1">Wet your hands with clean water</div>
-                    <div class="sort-item" draggable="true" data-order="2">Apply soap</div>
-                    <div class="sort-item" draggable="true" data-order="3">Rub hands together for 20 seconds</div>
-                    <div class="sort-item" draggable="true" data-order="4">Rinse hands under clean water</div>
-                    <div class="sort-item" draggable="true" data-order="5">Dry hands with a clean towel</div>
+                <h3>Health Quiz</h3>
+                <div class="quiz-container" id="health-quiz">
+                    <div class="quiz-question" id="health-question"></div>
+                    <div class="quiz-options" id="health-options"></div>
+                    <div class="quiz-result" id="health-result"></div>
+                    <button class="next-btn" id="health-next">Next Question</button>
                 </div>
-                
-                <div class="feedback" id="steps-feedback"></div>
-                <button class="game-btn" id="steps-check">Check Order</button>
             </div>
         </div>
         
@@ -727,24 +721,13 @@
             </div>
             
             <div class="game-container">
-                <h3>Build a Healthy Meal</h3>
-                <p>Select foods to create a balanced meal!</p>
-                
-                <div class="option-container" id="meal-options">
-                    <div class="option" data-healthy="yes">🍎 Apple</div>
-                    <div class="option" data-healthy="yes">🥗 Salad</div>
-                    <div class="option" data-healthy="yes">🍗 Grilled Chicken</div>
-                    <div class="option" data-healthy="yes">🍚 Brown Rice</div>
-                    <div class="option" data-healthy="no">🍔 Burger</div>
-                    <div class="option" data-healthy="no">🍟 French Fries</div>
-                    <div class="option" data-healthy="no">🥤 Soda</div>
-                    <div class="option" data-healthy="yes">🥛 Milk</div>
-                    <div class="option" data-healthy="yes">🥦 Broccoli</div>
-                    <div class="option" data-healthy="no">🍬 Candy</div>
+                <h3>Food Quiz</h3>
+                <div class="quiz-container" id="food-quiz">
+                    <div class="quiz-question" id="food-question"></div>
+                    <div class="quiz-options" id="food-options"></div>
+                    <div class="quiz-result" id="food-result"></div>
+                    <button class="next-btn" id="food-next">Next Question</button>
                 </div>
-                
-                <div class="feedback" id="meal-feedback"></div>
-                <button class="game-btn" id="meal-check">Check My Meal</button>
             </div>
         </div>
         
@@ -813,22 +796,13 @@
             </div>
             
             <div class="game-container">
-                <h3>Why Do We Need Air?</h3>
-                <p>Select all the reasons why air is important!</p>
-                
-                <div class="option-container" id="air-reasons">
-                    <div class="option" data-correct="true">We need oxygen to breathe</div>
-                    <div class="option" data-correct="true">Plants need carbon dioxide</div>
-                    <div class="option" data-correct="true">Air helps birds fly</div>
-                    <div class="option" data-correct="true">Air carries sound waves</div>
-                    <div class="option" data-correct="false">Air makes us sleepy</div>
-                    <div class="option" data-correct="true">Air protects us from the sun's heat</div>
-                    <div class="option" data-correct="false">Air makes our food taste better</div>
-                    <div class="option" data-correct="true">Air helps scatter light to make the sky blue</div>
+                <h3>Air Quiz</h3>
+                <div class="quiz-container" id="air-quiz">
+                    <div class="quiz-question" id="air-question"></div>
+                    <div class="quiz-options" id="air-options"></div>
+                    <div class="quiz-result" id="air-result"></div>
+                    <button class="next-btn" id="air-next">Next Question</button>
                 </div>
-                
-                <div class="feedback" id="reasons-feedback"></div>
-                <button class="game-btn" id="reasons-check">Check My Answers</button>
             </div>
         </div>
         
@@ -846,15 +820,32 @@
     </div>
 
     <script>
-        // Initialize game state
+                    // Initialize game state
         let gameState = {
             completedGames: 0,
             totalGames: 12,
             familyQuizIndex: 0,
             bodyQuizIndex: 0,
             waterQuizIndex: 0,
+            airQuizIndex: 0,
+            foodQuizIndex: 0,
+            healthQuizIndex: 0,
+            familyQuizCompleted: false,
+            bodyQuizCompleted: false,
+            waterQuizCompleted: false,
+            airQuizCompleted: false,
+            foodQuizCompleted: false,
+            healthQuizCompleted: false,
             matchedPairs: 0,
-            stars: 0
+            stars: 0,
+            usedQuestions: {
+                family: new Set(),
+                body: new Set(),
+                water: new Set(),
+                air: new Set(),
+                food: new Set(),
+                health: new Set()
+            }
         };
         
         // Quiz questions data
@@ -878,6 +869,36 @@
                 question: "What do we call the children of our aunts and uncles?",
                 options: ["Siblings", "Cousins", "Friends", "Neighbors"],
                 answer: 1
+            },
+            {
+                question: "What is a family tree?",
+                options: ["A tree that families plant together", "A diagram showing family relationships", "A type of plant", "A family game"],
+                answer: 1
+            },
+            {
+                question: "What do we call our mother's or father's brother?",
+                options: ["Cousin", "Uncle", "Grandfather", "Brother"],
+                answer: 1
+            },
+            {
+                question: "Who is the child of your grandparents, but not your parent?",
+                options: ["Brother or sister", "Cousin", "Uncle or aunt", "Niece or nephew"],
+                answer: 2
+            },
+            {
+                question: "What should you do when a family member is sad?",
+                options: ["Ignore them", "Make fun of them", "Comfort them", "Run away"],
+                answer: 2
+            },
+            {
+                question: "Which of these is NOT typically considered a family member?",
+                options: ["Aunt", "Cousin", "Classmate", "Grandfather"],
+                answer: 2
+            },
+            {
+                question: "Why are friends important?",
+                options: ["They help us with homework only", "They share toys only", "They provide company and support", "They are not important"],
+                answer: 2
             }
         ];
         
@@ -901,6 +922,36 @@
                 question: "Which organ helps digest your food?",
                 options: ["Lungs", "Brain", "Heart", "Stomach"],
                 answer: 3
+            },
+            {
+                question: "Which body part helps you see?",
+                options: ["Ears", "Nose", "Eyes", "Hands"],
+                answer: 2
+            },
+            {
+                question: "Which body part helps you hear sounds?",
+                options: ["Nose", "Ears", "Eyes", "Mouth"],
+                answer: 1
+            },
+            {
+                question: "What protects your body and keeps water inside?",
+                options: ["Hair", "Skin", "Nails", "Teeth"],
+                answer: 1
+            },
+            {
+                question: "What is the job of your skeleton?",
+                options: ["To scare people", "To help you run fast", "To support your body and protect organs", "To make you sleepy"],
+                answer: 2
+            },
+            {
+                question: "How many main parts does the brain have?",
+                options: ["One", "Two", "Three", "Four"],
+                answer: 2
+            },
+            {
+                question: "Which organ removes waste from your blood?",
+                options: ["Kidneys", "Lungs", "Heart", "Liver"],
+                answer: 0
             }
         ];
         
@@ -939,6 +990,198 @@
                     "Fixing leaky taps"
                 ],
                 answer: 1
+            },
+            {
+                question: "In which form does water fall from clouds?",
+                options: ["Only as rain", "As steam", "As rain, snow, or hail", "As ice cubes"],
+                answer: 2
+            },
+            {
+                question: "What happens to water when it gets very cold?",
+                options: ["It disappears", "It turns into ice", "It becomes invisible", "It turns into soil"],
+                answer: 1
+            },
+            {
+                question: "Which of these is NOT a source of freshwater?",
+                options: ["Rivers", "Lakes", "Oceans", "Glaciers"],
+                answer: 2
+            },
+            {
+                question: "Why should we not waste water?",
+                options: ["Water is unlimited", "Clean water is limited and many people don't have enough", "Water isn't important", "Water is bad for plants"],
+                answer: 1
+            },
+            {
+                question: "What is groundwater?",
+                options: ["Water on the ground", "Water in clouds", "Water stored underground", "Water in plants"],
+                answer: 2
+            },
+            {
+                question: "How much of your body is made up of water?",
+                options: ["About 10%", "About 30%", "About 60%", "About 90%"],
+                answer: 2
+            }
+        ];
+        
+        // Adding a new Air Quiz
+        const airQuizData = [
+            {
+                question: "What is the main gas in air that humans need to breathe?",
+                options: ["Carbon dioxide", "Nitrogen", "Oxygen", "Hydrogen"],
+                answer: 2
+            },
+            {
+                question: "What causes air pollution?",
+                options: ["Trees", "Bicycles", "Factory smoke", "Clean water"],
+                answer: 2
+            },
+            {
+                question: "Which of these helps clean the air?",
+                options: ["Cars", "Trees", "Factories", "Burning trash"],
+                answer: 1
+            },
+            {
+                question: "What happens if we breathe polluted air?",
+                options: ["We might get sick", "We become stronger", "Nothing happens", "We grow taller"],
+                answer: 0
+            },
+            {
+                question: "Which is NOT a way to reduce air pollution?",
+                options: ["Walking or cycling", "Using more cars", "Planting trees", "Using clean energy"],
+                answer: 1
+            },
+            {
+                question: "Why do we feel wind?",
+                options: ["Air is moving", "Earth is shaking", "Sun is hot", "Moon is pulling"],
+                answer: 0
+            },
+            {
+                question: "Which layer of air protects us from harmful sun rays?",
+                options: ["Clouds", "Ozone layer", "Smoke", "Mountains"],
+                answer: 1
+            },
+            {
+                question: "What makes the sky look blue?",
+                options: ["Water reflection", "Air scattering sunlight", "Paint in the sky", "Blue planets"],
+                answer: 1
+            },
+            {
+                question: "Why can birds fly in the air?",
+                options: ["They are very light", "Air pushes up on their wings", "They have special shoes", "Air is solid for birds"],
+                answer: 1
+            },
+            {
+                question: "Which of these is NOT carried by air?",
+                options: ["Sound", "Seeds", "Stones", "Dust"],
+                answer: 2
+            }
+        ];
+        
+        // Adding a Food Quiz
+        const foodQuizData = [
+            {
+                question: "Which food group gives us energy?",
+                options: ["Vegetables", "Proteins", "Grains", "Water"],
+                answer: 2
+            },
+            {
+                question: "Which food helps build strong bones?",
+                options: ["Candy", "Milk", "Soda", "Chips"],
+                answer: 1
+            },
+            {
+                question: "How many main food groups are there?",
+                options: ["Three", "Five", "Seven", "Ten"],
+                answer: 1
+            },
+            {
+                question: "Which is NOT a healthy snack?",
+                options: ["Apple", "Carrot sticks", "Yogurt", "Chocolate bar"],
+                answer: 3
+            },
+            {
+                question: "What do fruits and vegetables give our bodies?",
+                options: ["Only energy", "Vitamins and minerals", "Only water", "Only protein"],
+                answer: 1
+            },
+            {
+                question: "How many meals should we eat each day?",
+                options: ["One big meal", "Two meals", "Three meals with healthy snacks", "As many as possible"],
+                answer: 2
+            },
+            {
+                question: "Why should we avoid eating too much sugar?",
+                options: ["It's expensive", "It can cause tooth decay", "It's too cold", "It's too colorful"],
+                answer: 1
+            },
+            {
+                question: "Which of these is a protein food?",
+                options: ["Apple", "Bread", "Chicken", "Orange juice"],
+                answer: 2
+            },
+            {
+                question: "What should you do before eating food?",
+                options: ["Watch TV", "Wash your hands", "Run around", "Take a nap"],
+                answer: 1
+            },
+            {
+                question: "Why is breakfast important?",
+                options: ["It's not important", "It gives energy for the day", "It helps you sleep", "It makes you taller instantly"],
+                answer: 1
+            }
+        ];
+        
+        // Adding a Health Quiz
+        const healthQuizData = [
+            {
+                question: "How often should you brush your teeth?",
+                options: ["Once a week", "Once a month", "Twice a day", "Only when they feel dirty"],
+                answer: 2
+            },
+            {
+                question: "Why is exercise important?",
+                options: ["It makes us tired", "It keeps our body healthy and strong", "It's not important", "It makes us sleepy"],
+                answer: 1
+            },
+            {
+                question: "How many hours of sleep should a Class 3 student get?",
+                options: ["4-5 hours", "6-7 hours", "9-11 hours", "15 hours"],
+                answer: 2
+            },
+            {
+                question: "When should you wash your hands?",
+                options: ["Only in the morning", "After using the toilet and before eating", "Once a day", "Only when they look dirty"],
+                answer: 1
+            },
+            {
+                question: "Which of these is NOT a good hygiene habit?",
+                options: ["Taking regular baths", "Brushing teeth", "Wearing clean clothes", "Sharing combs with everyone"],
+                answer: 3
+            },
+            {
+                question: "Why should we cover our mouth when coughing or sneezing?",
+                options: ["To look nice", "To prevent spreading germs", "To make a louder sound", "It's not necessary"],
+                answer: 1
+            },
+            {
+                question: "How often should you take a bath or shower?",
+                options: ["Once a month", "Once a year", "Daily or every other day", "Only when it rains"],
+                answer: 2
+            },
+            {
+                question: "Which is a healthy activity for your body?",
+                options: ["Watching TV all day", "Playing outside", "Eating only candy", "Staying up all night"],
+                answer: 1
+            },
+            {
+                question: "What should you do if you feel sick?",
+                options: ["Ignore it", "Tell an adult", "Keep playing", "Eat more candy"],
+                answer: 1
+            },
+            {
+                question: "Why should you eat fruits and vegetables?",
+                options: ["They taste bad", "They are expensive", "They have important nutrients", "They make good toys"],
+                answer: 2
             }
         ];
         
@@ -1054,13 +1297,13 @@
             initBodyDragDrop();
             initBodyQuiz();
             initHealthSorting();
-            initHandwashingSteps();
+            initHealthQuiz();
             initFoodSorting();
-            initHealthyMeal();
+            initFoodQuiz();
             initWaterCycle();
             initWaterQuiz();
             initAirSorting();
-            initAirReasons();
+            initAirQuiz();
             
             // Initialize progress
             updateProgress();
@@ -1217,9 +1460,37 @@
             const result = document.getElementById('family-result');
             const nextButton = document.getElementById('family-next');
             
+            // Track questions we've seen to avoid repetition
+            const usedQuestionIndices = new Set();
+            let questionsAnswered = 0;
+            
             // Load question
             function loadQuestion() {
-                const currentQuestion = familyQuizData[gameState.familyQuizIndex];
+                // If we've answered all 10 questions, complete the quiz
+                if (questionsAnswered >= 10) {
+                    result.textContent = "Quiz completed! You've answered all 10 questions!";
+                    result.className = 'quiz-result success';
+                    result.style.display = 'block';
+                    nextButton.textContent = 'Restart Quiz';
+                    nextButton.onclick = resetQuiz;
+                    if (!gameState.familyQuizCompleted) {
+                        gameState.familyQuizCompleted = true;
+                        completeGame();
+                    }
+                    return;
+                }
+                
+                // Find a question we haven't used
+                let randomIndex;
+                do {
+                    randomIndex = Math.floor(Math.random() * familyQuizData.length);
+                } while (usedQuestionIndices.has(randomIndex));
+                
+                // Mark this question as used
+                usedQuestionIndices.add(randomIndex);
+                gameState.familyQuizIndex = randomIndex;
+                
+                const currentQuestion = familyQuizData[randomIndex];
                 question.textContent = currentQuestion.question;
                 
                 options.innerHTML = '';
@@ -1265,25 +1536,30 @@
                 
                 result.style.display = 'block';
                 
-                // If last question
-                if (gameState.familyQuizIndex === familyQuizData.length - 1) {
+                // Increment answered questions counter
+                questionsAnswered++;
+                
+                // Update button text for the last question
+                if (questionsAnswered >= 10) {
                     nextButton.textContent = 'Finish Quiz';
-                    completeGame();
                 }
             }
             
+            // Reset the quiz
+            function resetQuiz() {
+                usedQuestionIndices.clear();
+                questionsAnswered = 0;
+                nextButton.textContent = 'Next Question';
+                nextButton.onclick = nextQuestion;
+                loadQuestion();
+            }
+            
             // Next question
-            nextButton.addEventListener('click', function() {
-                gameState.familyQuizIndex++;
-                
-                if (gameState.familyQuizIndex < familyQuizData.length) {
-                    loadQuestion();
-                } else {
-                    gameState.familyQuizIndex = 0;
-                    loadQuestion();
-                    nextButton.textContent = 'Next Question';
-                }
-            });
+            function nextQuestion() {
+                loadQuestion();
+            }
+            
+            nextButton.addEventListener('click', nextQuestion);
             
             // Initialize quiz
             loadQuestion();
@@ -1370,9 +1646,37 @@
             const result = document.getElementById('body-result');
             const nextButton = document.getElementById('body-next');
             
+            // Track questions we've seen to avoid repetition
+            const usedQuestionIndices = new Set();
+            let questionsAnswered = 0;
+            
             // Load question
             function loadQuestion() {
-                const currentQuestion = bodyQuizData[gameState.bodyQuizIndex];
+                // If we've answered all 10 questions, complete the quiz
+                if (questionsAnswered >= 10) {
+                    result.textContent = "Quiz completed! You've answered all 10 questions!";
+                    result.className = 'quiz-result success';
+                    result.style.display = 'block';
+                    nextButton.textContent = 'Restart Quiz';
+                    nextButton.onclick = resetQuiz;
+                    if (!gameState.bodyQuizCompleted) {
+                        gameState.bodyQuizCompleted = true;
+                        completeGame();
+                    }
+                    return;
+                }
+                
+                // Find a question we haven't used
+                let randomIndex;
+                do {
+                    randomIndex = Math.floor(Math.random() * bodyQuizData.length);
+                } while (usedQuestionIndices.has(randomIndex));
+                
+                // Mark this question as used
+                usedQuestionIndices.add(randomIndex);
+                gameState.bodyQuizIndex = randomIndex;
+                
+                const currentQuestion = bodyQuizData[randomIndex];
                 question.textContent = currentQuestion.question;
                 
                 options.innerHTML = '';
@@ -1418,25 +1722,30 @@
                 
                 result.style.display = 'block';
                 
-                // If last question
-                if (gameState.bodyQuizIndex === bodyQuizData.length - 1) {
+                // Increment answered questions counter
+                questionsAnswered++;
+                
+                // Update button text for the last question
+                if (questionsAnswered >= 10) {
                     nextButton.textContent = 'Finish Quiz';
-                    completeGame();
                 }
             }
             
+            // Reset the quiz
+            function resetQuiz() {
+                usedQuestionIndices.clear();
+                questionsAnswered = 0;
+                nextButton.textContent = 'Next Question';
+                nextButton.onclick = nextQuestion;
+                loadQuestion();
+            }
+            
             // Next question
-            nextButton.addEventListener('click', function() {
-                gameState.bodyQuizIndex++;
-                
-                if (gameState.bodyQuizIndex < bodyQuizData.length) {
-                    loadQuestion();
-                } else {
-                    gameState.bodyQuizIndex = 0;
-                    loadQuestion();
-                    nextButton.textContent = 'Next Question';
-                }
-            });
+            function nextQuestion() {
+                loadQuestion();
+            }
+            
+            nextButton.addEventListener('click', nextQuestion);
             
             // Initialize quiz
             loadQuestion();
@@ -1784,9 +2093,37 @@
             const result = document.getElementById('water-result');
             const nextButton = document.getElementById('water-next');
             
+            // Track questions we've seen to avoid repetition
+            const usedQuestionIndices = new Set();
+            let questionsAnswered = 0;
+            
             // Load question
             function loadQuestion() {
-                const currentQuestion = waterQuizData[gameState.waterQuizIndex];
+                // If we've answered all 10 questions, complete the quiz
+                if (questionsAnswered >= 10) {
+                    result.textContent = "Quiz completed! You've answered all 10 questions!";
+                    result.className = 'quiz-result success';
+                    result.style.display = 'block';
+                    nextButton.textContent = 'Restart Quiz';
+                    nextButton.onclick = resetQuiz;
+                    if (!gameState.waterQuizCompleted) {
+                        gameState.waterQuizCompleted = true;
+                        completeGame();
+                    }
+                    return;
+                }
+                
+                // Find a question we haven't used
+                let randomIndex;
+                do {
+                    randomIndex = Math.floor(Math.random() * waterQuizData.length);
+                } while (usedQuestionIndices.has(randomIndex));
+                
+                // Mark this question as used
+                usedQuestionIndices.add(randomIndex);
+                gameState.waterQuizIndex = randomIndex;
+                
+                const currentQuestion = waterQuizData[randomIndex];
                 question.textContent = currentQuestion.question;
                 
                 options.innerHTML = '';
@@ -1832,25 +2169,30 @@
                 
                 result.style.display = 'block';
                 
-                // If last question
-                if (gameState.waterQuizIndex === waterQuizData.length - 1) {
+                // Increment answered questions counter
+                questionsAnswered++;
+                
+                // Update button text for the last question
+                if (questionsAnswered >= 10) {
                     nextButton.textContent = 'Finish Quiz';
-                    completeGame();
                 }
             }
             
+            // Reset the quiz
+            function resetQuiz() {
+                usedQuestionIndices.clear();
+                questionsAnswered = 0;
+                nextButton.textContent = 'Next Question';
+                nextButton.onclick = nextQuestion;
+                loadQuestion();
+            }
+            
             // Next question
-            nextButton.addEventListener('click', function() {
-                gameState.waterQuizIndex++;
-                
-                if (gameState.waterQuizIndex < waterQuizData.length) {
-                    loadQuestion();
-                } else {
-                    gameState.waterQuizIndex = 0;
-                    loadQuestion();
-                    nextButton.textContent = 'Next Question';
-                }
-            });
+            function nextQuestion() {
+                loadQuestion();
+            }
+            
+            nextButton.addEventListener('click', nextQuestion);
             
             // Initialize quiz
             loadQuestion();
@@ -1933,56 +2275,340 @@
             });
         }
         
-        // Air Importance Selection
-        function initAirReasons() {
-            const reasonOptions = document.querySelectorAll('#air-reasons .option');
-            const checkButton = document.getElementById('reasons-check');
-            const feedback = document.getElementById('reasons-feedback');
+        // Air Quiz
+        function initAirQuiz() {
+            const question = document.getElementById('air-question');
+            const options = document.getElementById('air-options');
+            const result = document.getElementById('air-result');
+            const nextButton = document.getElementById('air-next');
             
-            // Make options selectable
-            reasonOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    this.classList.toggle('selected');
-                    
-                    if (this.classList.contains('selected')) {
-                        this.style.backgroundColor = '#d4edda';
-                        this.style.borderColor = '#c3e6cb';
-                    } else {
-                        this.style.backgroundColor = '';
-                        this.style.borderColor = '';
-                    }
-                });
-            });
+            // Track questions we've seen to avoid repetition
+            const usedQuestionIndices = new Set();
+            let questionsAnswered = 0;
             
-            // Check selections
-            checkButton.addEventListener('click', function() {
-                let allCorrect = true;
-                
-                reasonOptions.forEach(option => {
-                    const isSelected = option.classList.contains('selected');
-                    const shouldBeSelected = option.getAttribute('data-correct') === 'true';
-                    
-                    if (isSelected !== shouldBeSelected) {
-                        allCorrect = false;
-                        option.style.backgroundColor = '#f8d7da';
-                        option.style.borderColor = '#f5c6cb';
-                    } else {
-                        option.style.backgroundColor = '#d4edda';
-                        option.style.borderColor = '#c3e6cb';
+            // Load question
+            function loadQuestion() {
+                // If we've answered all 10 questions, complete the quiz
+                if (questionsAnswered >= 10) {
+                    result.textContent = "Quiz completed! You've answered all 10 questions!";
+                    result.className = 'quiz-result success';
+                    result.style.display = 'block';
+                    nextButton.textContent = 'Restart Quiz';
+                    nextButton.onclick = resetQuiz;
+                    if (!gameState.airQuizCompleted) {
+                        gameState.airQuizCompleted = true;
+                        completeGame();
                     }
-                });
-                
-                if (allCorrect) {
-                    feedback.textContent = "Excellent! You know why air is important!";
-                    feedback.className = 'feedback success';
-                    completeGame();
-                } else {
-                    feedback.textContent = "Check your answers again. Some are not correct.";
-                    feedback.className = 'feedback error';
+                    return;
                 }
                 
-                feedback.style.display = 'block';
-            });
+                // Find a question we haven't used
+                let randomIndex;
+                do {
+                    randomIndex = Math.floor(Math.random() * airQuizData.length);
+                } while (usedQuestionIndices.has(randomIndex));
+                
+                // Mark this question as used
+                usedQuestionIndices.add(randomIndex);
+                gameState.airQuizIndex = randomIndex;
+                
+                const currentQuestion = airQuizData[randomIndex];
+                question.textContent = currentQuestion.question;
+                
+                options.innerHTML = '';
+                currentQuestion.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.classList.add('quiz-option');
+                    optionElement.textContent = option;
+                    optionElement.dataset.index = index;
+                    optionElement.addEventListener('click', checkAnswer);
+                    options.appendChild(optionElement);
+                });
+                
+                result.style.display = 'none';
+            }
+            
+            // Check answer
+            function checkAnswer() {
+                const selectedIndex = parseInt(this.dataset.index);
+                const currentQuestion = airQuizData[gameState.airQuizIndex];
+                
+                // Disable all options
+                document.querySelectorAll('#air-quiz .quiz-option').forEach(option => {
+                    option.removeEventListener('click', checkAnswer);
+                    option.style.pointerEvents = 'none';
+                });
+                
+                if (selectedIndex === currentQuestion.answer) {
+                    result.textContent = "Correct! Great job!";
+                    result.className = 'quiz-result success';
+                    this.style.backgroundColor = '#d4edda';
+                    this.style.borderColor = '#c3e6cb';
+                } else {
+                    result.textContent = "Not quite. Try again!";
+                    result.className = 'quiz-result error';
+                    this.style.backgroundColor = '#f8d7da';
+                    this.style.borderColor = '#f5c6cb';
+                    
+                    // Highlight correct answer
+                    const correctOption = document.querySelectorAll('#air-quiz .quiz-option')[currentQuestion.answer];
+                    correctOption.style.backgroundColor = '#d4edda';
+                    correctOption.style.borderColor = '#c3e6cb';
+                }
+                
+                result.style.display = 'block';
+                
+                // Increment answered questions counter
+                questionsAnswered++;
+                
+                // Update button text for the last question
+                if (questionsAnswered >= 10) {
+                    nextButton.textContent = 'Finish Quiz';
+                }
+            }
+            
+            // Reset the quiz
+            function resetQuiz() {
+                usedQuestionIndices.clear();
+                questionsAnswered = 0;
+                nextButton.textContent = 'Next Question';
+                nextButton.onclick = nextQuestion;
+                loadQuestion();
+            }
+            
+            // Next question
+            function nextQuestion() {
+                loadQuestion();
+            }
+            
+            nextButton.addEventListener('click', nextQuestion);
+            
+            // Initialize quiz
+            loadQuestion();
+        }
+        
+        // Food Quiz
+        function initFoodQuiz() {
+            const question = document.getElementById('food-question');
+            const options = document.getElementById('food-options');
+            const result = document.getElementById('food-result');
+            const nextButton = document.getElementById('food-next');
+            
+            // Track questions we've seen to avoid repetition
+            const usedQuestionIndices = new Set();
+            let questionsAnswered = 0;
+            
+            // Load question
+            function loadQuestion() {
+                // If we've answered all 10 questions, complete the quiz
+                if (questionsAnswered >= 10) {
+                    result.textContent = "Quiz completed! You've answered all 10 questions!";
+                    result.className = 'quiz-result success';
+                    result.style.display = 'block';
+                    nextButton.textContent = 'Restart Quiz';
+                    nextButton.onclick = resetQuiz;
+                    if (!gameState.foodQuizCompleted) {
+                        gameState.foodQuizCompleted = true;
+                        completeGame();
+                    }
+                    return;
+                }
+                
+                // Find a question we haven't used
+                let randomIndex;
+                do {
+                    randomIndex = Math.floor(Math.random() * foodQuizData.length);
+                } while (usedQuestionIndices.has(randomIndex));
+                
+                // Mark this question as used
+                usedQuestionIndices.add(randomIndex);
+                gameState.foodQuizIndex = randomIndex;
+                
+                const currentQuestion = foodQuizData[randomIndex];
+                question.textContent = currentQuestion.question;
+                
+                options.innerHTML = '';
+                currentQuestion.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.classList.add('quiz-option');
+                    optionElement.textContent = option;
+                    optionElement.dataset.index = index;
+                    optionElement.addEventListener('click', checkAnswer);
+                    options.appendChild(optionElement);
+                });
+                
+                result.style.display = 'none';
+            }
+            
+            // Check answer
+            function checkAnswer() {
+                const selectedIndex = parseInt(this.dataset.index);
+                const currentQuestion = foodQuizData[gameState.foodQuizIndex];
+                
+                // Disable all options
+                document.querySelectorAll('#food-quiz .quiz-option').forEach(option => {
+                    option.removeEventListener('click', checkAnswer);
+                    option.style.pointerEvents = 'none';
+                });
+                
+                if (selectedIndex === currentQuestion.answer) {
+                    result.textContent = "Correct! Great job!";
+                    result.className = 'quiz-result success';
+                    this.style.backgroundColor = '#d4edda';
+                    this.style.borderColor = '#c3e6cb';
+                } else {
+                    result.textContent = "Not quite. Try again!";
+                    result.className = 'quiz-result error';
+                    this.style.backgroundColor = '#f8d7da';
+                    this.style.borderColor = '#f5c6cb';
+                    
+                    // Highlight correct answer
+                    const correctOption = document.querySelectorAll('#food-quiz .quiz-option')[currentQuestion.answer];
+                    correctOption.style.backgroundColor = '#d4edda';
+                    correctOption.style.borderColor = '#c3e6cb';
+                }
+                
+                result.style.display = 'block';
+                
+                // Increment answered questions counter
+                questionsAnswered++;
+                
+                // Update button text for the last question
+                if (questionsAnswered >= 10) {
+                    nextButton.textContent = 'Finish Quiz';
+                }
+            }
+            
+            // Reset the quiz
+            function resetQuiz() {
+                usedQuestionIndices.clear();
+                questionsAnswered = 0;
+                nextButton.textContent = 'Next Question';
+                nextButton.onclick = nextQuestion;
+                loadQuestion();
+            }
+            
+            // Next question
+            function nextQuestion() {
+                loadQuestion();
+            }
+            
+            nextButton.addEventListener('click', nextQuestion);
+            
+            // Initialize quiz
+            loadQuestion();
+        }
+        
+        // Health Quiz
+        function initHealthQuiz() {
+            const question = document.getElementById('health-question');
+            const options = document.getElementById('health-options');
+            const result = document.getElementById('health-result');
+            const nextButton = document.getElementById('health-next');
+            
+            // Track questions we've seen to avoid repetition
+            const usedQuestionIndices = new Set();
+            let questionsAnswered = 0;
+            
+            // Load question
+            function loadQuestion() {
+                // If we've answered all 10 questions, complete the quiz
+                if (questionsAnswered >= 10) {
+                    result.textContent = "Quiz completed! You've answered all 10 questions!";
+                    result.className = 'quiz-result success';
+                    result.style.display = 'block';
+                    nextButton.textContent = 'Restart Quiz';
+                    nextButton.onclick = resetQuiz;
+                    if (!gameState.healthQuizCompleted) {
+                        gameState.healthQuizCompleted = true;
+                        completeGame();
+                    }
+                    return;
+                }
+                
+                // Find a question we haven't used
+                let randomIndex;
+                do {
+                    randomIndex = Math.floor(Math.random() * healthQuizData.length);
+                } while (usedQuestionIndices.has(randomIndex));
+                
+                // Mark this question as used
+                usedQuestionIndices.add(randomIndex);
+                gameState.healthQuizIndex = randomIndex;
+                
+                const currentQuestion = healthQuizData[randomIndex];
+                question.textContent = currentQuestion.question;
+                
+                options.innerHTML = '';
+                currentQuestion.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.classList.add('quiz-option');
+                    optionElement.textContent = option;
+                    optionElement.dataset.index = index;
+                    optionElement.addEventListener('click', checkAnswer);
+                    options.appendChild(optionElement);
+                });
+                
+                result.style.display = 'none';
+            }
+            
+            // Check answer
+            function checkAnswer() {
+                const selectedIndex = parseInt(this.dataset.index);
+                const currentQuestion = healthQuizData[gameState.healthQuizIndex];
+                
+                // Disable all options
+                document.querySelectorAll('#health-quiz .quiz-option').forEach(option => {
+                    option.removeEventListener('click', checkAnswer);
+                    option.style.pointerEvents = 'none';
+                });
+                
+                if (selectedIndex === currentQuestion.answer) {
+                    result.textContent = "Correct! Great job!";
+                    result.className = 'quiz-result success';
+                    this.style.backgroundColor = '#d4edda';
+                    this.style.borderColor = '#c3e6cb';
+                } else {
+                    result.textContent = "Not quite. Try again!";
+                    result.className = 'quiz-result error';
+                    this.style.backgroundColor = '#f8d7da';
+                    this.style.borderColor = '#f5c6cb';
+                    
+                    // Highlight correct answer
+                    const correctOption = document.querySelectorAll('#health-quiz .quiz-option')[currentQuestion.answer];
+                    correctOption.style.backgroundColor = '#d4edda';
+                    correctOption.style.borderColor = '#c3e6cb';
+                }
+                
+                result.style.display = 'block';
+                
+                // Increment answered questions counter
+                questionsAnswered++;
+                
+                // Update button text for the last question
+                if (questionsAnswered >= 10) {
+                    nextButton.textContent = 'Finish Quiz';
+                }
+            }
+            
+            // Reset the quiz
+            function resetQuiz() {
+                usedQuestionIndices.clear();
+                questionsAnswered = 0;
+                nextButton.textContent = 'Next Question';
+                nextButton.onclick = nextQuestion;
+                loadQuestion();
+            }
+            
+            // Next question
+            function nextQuestion() {
+                loadQuestion();
+            }
+            
+            nextButton.addEventListener('click', nextQuestion);
+            
+            // Initialize quiz
+            loadQuestion();
         }
     </script>
 </body>
